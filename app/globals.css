@@ -1,0 +1,116 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+:root {
+  --background: #ffffff;
+  --foreground: #181413;
+  --font-inter: "Inter";
+  --font-playfair: "Playfair Display";
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  color: #181413;
+  background: rgba(212, 175, 55, 0.35);
+}
+
+.luxury-ring {
+  position: relative;
+}
+
+.luxury-ring::before {
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  content: "";
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.8), rgba(231, 201, 192, 0.35), rgba(111, 78, 55, 0.35));
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.luxury-ring:hover::before {
+  opacity: 1;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.gold-line {
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.7), transparent);
+}
+
+.focus-luxury {
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+
+.focus-luxury:focus-visible {
+  outline-color: #d4af37;
+}
+
+.container-x {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media (min-width: 768px) {
+  .container-x {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+@media (min-width: 1024px) {
+  .container-x {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+.label-eyebrow {
+  color: #8a7365;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  align-items: center;
+  background-color: #2d1b11;
+  color: #fdfbf7;
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 500;
+  height: 3.5rem;
+  justify-content: center;
+  letter-spacing: 0.25em;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #5c463a;
+  opacity: 0.9;
+}
+

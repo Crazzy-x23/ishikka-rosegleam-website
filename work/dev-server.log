@@ -1,0 +1,41 @@
+
+> ishikka-rosegleam@0.1.0 dev
+> next dev --hostname 127.0.0.1
+
+   ▲ Next.js 15.5.19
+   - Local:        http://127.0.0.1:3000
+   - Network:      http://127.0.0.1:3000
+
+ ✓ Starting...
+ ✓ Ready in 5s
+ ○ Compiling / ...
+ ✓ Compiled / in 2.9s (688 modules)
+ GET / 200 in 5072ms
+ GET / 200 in 1073ms
+ GET / 200 in 2328ms
+ ○ Compiling /shop ...
+ ✓ Compiled /shop in 6.5s (746 modules)
+ GET /shop 200 in 7076ms
+ GET /shop 200 in 207ms
+ GET /shop 200 in 85ms
+ GET / 200 in 553ms
+ GET /shop 200 in 85ms
+ ○ Compiling /about ...
+ ✓ Compiled /about in 1493ms (738 modules)
+ GET /about 200 in 1983ms
+ ○ Compiling /contact ...
+ ✓ Compiled /contact in 920ms (743 modules)
+ GET /contact 200 in 1161ms
+ ○ Compiling /products/[slug] ...
+ ✓ Compiled /products/[slug] in 1261ms (756 modules)
+ GET /products/opal-whisper-studs 200 in 3325ms
+ GET /products/opal-whisper-studs 200 in 436ms
+ GET / 200 in 1858ms
+ GET /shop 200 in 247ms
+ GET /products/opal-whisper-studs 200 in 393ms
+ GET / 200 in 1171ms
+ GET /shop?category=earrings 200 in 67ms
+ GET /products/rose-pendant-necklace 200 in 361ms
+ GET /products/rose-pendant-necklace 200 in 1175ms
+ GET / 200 in 1171ms
+ GET / 200 in 1023ms
