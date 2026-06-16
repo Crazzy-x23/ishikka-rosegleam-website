@@ -2,13 +2,18 @@
 
 import { ChevronLeft, ChevronRight, Search, SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
-import { categories, products } from "@/lib/data";
+import { categories } from "@/lib/data";
+import type { Product } from "@/lib/data";
 import { ProductCard } from "@/components/ProductCard";
 import { cn } from "@/lib/utils";
 
 const pageSize = 6;
 
-export function ProductGrid() {
+type ProductGridProps = {
+  products: Product[];
+};
+
+export function ProductGrid({ products = [] }: ProductGridProps) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("featured");
@@ -34,7 +39,7 @@ export function ProductGrid() {
       if (sort === "newest") return b.slug.localeCompare(a.slug);
       return b.reviews - a.reviews;
     });
-  }, [category, query, sort]);
+  }, [category, query, sort, products]);
 
   const pageCount = Math.max(1, Math.ceil(filteredProducts.length / pageSize));
   const visibleProducts = filteredProducts.slice((page - 1) * pageSize, page * pageSize);

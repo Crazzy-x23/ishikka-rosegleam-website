@@ -4,8 +4,12 @@ import { ArrowRight, MessageCircle, ShieldCheck, Star } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
 import { SectionHeading } from "@/components/SectionHeading";
-import { products, testimonials } from "@/lib/data";
+import { testimonials } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
+import { sanityClient } from "@/lib/sanity/client";
+import { ALL_PRODUCTS_QUERY, ALL_PRODUCT_SLUGS_QUERY, PRODUCT_BY_SLUG_QUERY, RELATED_PRODUCTS_QUERY } from "@/lib/sanity/queries";
+import { mapSanityProduct } from "@/lib/sanity/types";
+import type { SanityProduct, SanityProductSlug } from "@/lib/sanity/types";
 
 type ProductPageProps = {
   params: Promise<{
@@ -14,18 +18,21 @@ type ProductPageProps = {
 };
 
 export async function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
+  const slugs = await sanityClient.fetch<SanityProductSlug[]>(ALL_PRODUCT_SLUGS_QUERY);
+  return slugs.map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = products.find((item) => item.slug === slug);
+  const rawProduct = await sanityClient.fetch<SanityProduct | null>(PRODUCT_BY_SLUG_QUERY, { slug });
 
-  if (!product) {
+  if (!rawProduct) {
     return {
       title: "Product Not Found"
     };
   }
+
+  const product = mapSanityProduct(rawProduct);
 
   return {
     title: product.name,
@@ -47,11 +54,42 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = products.find((item) => item.slug === slug) ?? products[0];
-  const relatedProducts = products
-    .filter((item) => item.category === product.category && item.slug !== product.slug)
-    .concat(products.filter((item) => item.slug !== product.slug))
-    .slice(0, 4);
+  
+  let rawProduct = await sanityClient.fetch<SanityProduct | null>(PRODUCT_BY_SLUG_QUERY, { slug });
+  if (!rawProduct) {
+    const allRaw = await sanityClient.fetch<SanityProduct[]>(ALL_PRODUCTS_QUERY);
+    if (allRaw.length > 0) {
+      rawProduct = allRaw[0];
+    }
+  }
+  
+  if (!rawProduct) {
+    return (
+      <main className="py-20 text-center">
+        <p className="text-xl">No products available.</p>
+      </main>
+    );
+  }
+  
+  const product = mapSanityProduct(rawProduct);
+  
+  const rawRelated = await sanityClient.fetch<SanityProduct[]>(RELATED_PRODUCTS_QUERY, {
+    category: product.category,
+    slug: product.slug,
+  });
+  let relatedProducts = rawRelated.map(mapSanityProduct);
+
+  if (relatedProducts.length < 4) {
+    const allRaw = await sanityClient.fetch<SanityProduct[]>(ALL_PRODUCTS_QUERY);
+    const allMapped = allRaw.map(mapSanityProduct).filter((item) => item.slug !== product.slug);
+    const combined = [...relatedProducts, ...allMapped];
+    const seenSlugs = new Set();
+    relatedProducts = combined.filter((item) => {
+      if (seenSlugs.has(item.slug)) return false;
+      seenSlugs.add(item.slug);
+      return true;
+    }).slice(0, 4);
+  }
 
   return (
     <main>

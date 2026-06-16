@@ -7,10 +7,26 @@ import { ProductCard } from "@/components/ProductCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { TestimonialCard } from "@/components/TestimonialCard";
 import { WhatsAppCTA } from "@/components/WhatsAppCTA";
-import { categories, instagramImages, newArrivals, products, testimonials, trustItems } from "@/lib/data";
+import { categories, instagramImages, testimonials, trustItems } from "@/lib/data";
+import { sanityClient } from "@/lib/sanity/client";
+import { ALL_PRODUCTS_QUERY, FEATURED_PRODUCTS_QUERY, NEW_ARRIVALS_QUERY } from "@/lib/sanity/queries";
+import { mapSanityProduct } from "@/lib/sanity/types";
+import type { SanityProduct } from "@/lib/sanity/types";
 
-export default function HomePage() {
-  const featuredProducts = products.slice(0, 4);
+export default async function HomePage() {
+  let rawFeatured = await sanityClient.fetch<SanityProduct[]>(FEATURED_PRODUCTS_QUERY);
+  if (!rawFeatured || rawFeatured.length === 0) {
+    const allProducts = await sanityClient.fetch<SanityProduct[]>(ALL_PRODUCTS_QUERY);
+    rawFeatured = allProducts.slice(0, 4);
+  }
+  const featuredProducts = rawFeatured.map(mapSanityProduct);
+
+  let rawNewArrivals = await sanityClient.fetch<SanityProduct[]>(NEW_ARRIVALS_QUERY);
+  if (!rawNewArrivals || rawNewArrivals.length === 0) {
+    const allProducts = await sanityClient.fetch<SanityProduct[]>(ALL_PRODUCTS_QUERY);
+    rawNewArrivals = allProducts.slice(0, 4);
+  }
+  const newArrivals = rawNewArrivals.map(mapSanityProduct);
 
   return (
     <main>
