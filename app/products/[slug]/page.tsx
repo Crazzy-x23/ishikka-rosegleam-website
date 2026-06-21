@@ -11,6 +11,8 @@ import { ALL_PRODUCTS_QUERY, ALL_PRODUCT_SLUGS_QUERY, PRODUCT_BY_SLUG_QUERY, REL
 import { mapSanityProduct } from "@/lib/sanity/types";
 import type { SanityProduct, SanityProductSlug } from "@/lib/sanity/types";
 
+export const dynamic = "force-dynamic";
+
 type ProductPageProps = {
   params: Promise<{
     slug: string;

@@ -13,6 +13,8 @@ import { ALL_PRODUCTS_QUERY, FEATURED_PRODUCTS_QUERY, NEW_ARRIVALS_QUERY } from 
 import { mapSanityProduct } from "@/lib/sanity/types";
 import type { SanityProduct } from "@/lib/sanity/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   let rawFeatured = await sanityClient.fetch<SanityProduct[]>(FEATURED_PRODUCTS_QUERY);
   if (!rawFeatured || rawFeatured.length === 0) {

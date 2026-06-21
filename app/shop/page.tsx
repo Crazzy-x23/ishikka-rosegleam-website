@@ -6,6 +6,8 @@ import { ALL_PRODUCTS_QUERY } from "@/lib/sanity/queries";
 import { mapSanityProduct } from "@/lib/sanity/types";
 import type { SanityProduct } from "@/lib/sanity/types";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Shop",
   description: "Browse Ishikka RoseGleam earrings, rings, necklaces, bracelets, and jewelry sets.",
